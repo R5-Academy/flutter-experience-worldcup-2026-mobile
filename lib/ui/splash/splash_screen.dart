@@ -86,6 +86,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ],
                 ),
               ),
+
               Text('V1.0.0 - Fifa World Cup 26', style: AppTextStyles.overline),
               const SizedBox(height: 20),
             ],
