@@ -1,5 +1,8 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:wc_2026_mobile/ui/core/share/labeled_field.dart';
+import 'package:wc_2026_mobile/ui/auth/login/widgets/emblem.dart';
+import 'package:wc_2026_mobile/ui/auth/login/widgets/header.dart';
+import 'package:wc_2026_mobile/ui/auth/login/widgets/login_form.dart';
+import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 
 class const LoginScreen({super.key}) extends StatefulWidget {
   @override
@@ -10,27 +13,45 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: 300,
-          height: 300,
-          child: Column(
-            spacing: 10,
-            children: [
-              LabeledField(
-                label: 'E-mail',
-                hint: 'voce@exemplo.com',
-                required: true,
-              ),
-
-              LabeledField.password(
-                label: 'Senha',
-                hint: 'voce@exemplo.com',
-                required: true,
-              ),
-            ],
+      body: Stack(
+        children: [
+          Header(),
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: .spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: .stretch,
+                  children: [
+                    const SizedBox(height: 20),
+                    Emblem(),
+                    const SizedBox(height: 26),
+                    Text(
+                      'FIFA WORLD CUP 26™',
+                      style: AppTextStyles.overline,
+                      textAlign: .center,
+                    ),
+                    const SizedBox(height: 36),
+                    Padding(
+                      padding: .symmetric(
+                        horizontal: AppDimens.paddingHorizontal,
+                      ),
+                      child: LoginForm(),
+                    ),
+                  ],
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.ink,
+                    textStyle: AppTextStyles.bodyBold,
+                  ),
+                  onPressed: () {},
+                  child: Text('Não tem conta?  Criar conta →'),
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
