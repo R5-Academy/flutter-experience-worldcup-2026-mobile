@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class const AuthSession({
   required final String token,
-  required final AuthUserSession user,
+  required final AuthSessionUser user,
 }) extends Equatable {
   @override
   List<Object?> get props => [token, user];
@@ -11,7 +11,7 @@ class const AuthSession({
   bool? get stringify => false;
 }
 
-class const AuthUserSession({
+class const AuthSessionUser({
   required final String name,
   required final String email,
 }) extends Equatable {

@@ -6,7 +6,7 @@ part 'auth_session_api_model.g.dart';
 @JsonSerializable()
 class const AuthSessionApiModel({
   required final String token,
-  required final AuthSessionApiModel user,
+  required final AuthSessionUserApiModel user,
 }) extends Equatable {
   factory AuthSessionApiModel.fromJson(Map<String, dynamic> json) =>
       _$AuthSessionApiModelFromJson(json);
