@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:wc_2026_mobile/routing/router.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
-import 'package:wc_2026_mobile/ui/welcome/welcome_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,6 +9,12 @@ void main() {
 class const MainApp({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: AppTheme.light, home: WelcomeScreen());
+    return MaterialApp.router(
+      theme: AppTheme.light,
+      builder: (context, child) {
+        return MaterialUiCompatibilityBridge(child: child!);
+      },
+      routerConfig: router(),
+    );
   }
 }
