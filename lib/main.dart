@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:wc_2026_mobile/ui/core/theme/app_theme.dart';
 
 void main() {
   runApp(const MainApp());
@@ -7,8 +8,13 @@ void main() {
 class const MainApp({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(body: Center(child: Text('Hello, World!'))),
+    return MaterialApp(
+      theme: AppTheme.light,
+      home: Scaffold(
+        body: Center(
+          child: FilledButton(onPressed: () {}, child: Text('CTA X')),
+        ),
+      ),
     );
   }
 }

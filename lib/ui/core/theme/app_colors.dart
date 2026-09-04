@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 final class AppColors._() {
   static const ink = Color(0xFF0E1117);
   static const cream = Color(0xFFF4F1EB);
-  static const write = Color(0xFFFFFFFF);
+  static const white = Color(0xFFFFFFFF);
   static const cream2 = Color(0xFFE7E2D6);
   static const gray = Color(0xFF7A7A85);
 
