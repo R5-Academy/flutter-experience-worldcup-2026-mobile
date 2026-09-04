@@ -9,7 +9,9 @@ part of 'auth_session_api_model.dart';
 AuthSessionApiModel _$AuthSessionApiModelFromJson(Map<String, dynamic> json) =>
     AuthSessionApiModel(
       token: json['token'] as String,
-      user: AuthSessionApiModel.fromJson(json['user'] as Map<String, dynamic>),
+      user: AuthSessionUserApiModel.fromJson(
+        json['user'] as Map<String, dynamic>,
+      ),
     );
 
 Map<String, dynamic> _$AuthSessionApiModelToJson(
