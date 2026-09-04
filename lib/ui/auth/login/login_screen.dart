@@ -14,10 +14,21 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SizedBox(
           width: 300,
           height: 300,
-          child: LabeledField(
-            label: 'E-mail',
-            hint: 'voce@exemplo.com',
-            required: true,
+          child: Column(
+            spacing: 10,
+            children: [
+              LabeledField(
+                label: 'E-mail',
+                hint: 'voce@exemplo.com',
+                required: true,
+              ),
+
+              LabeledField.password(
+                label: 'Senha',
+                hint: 'voce@exemplo.com',
+                required: true,
+              ),
+            ],
           ),
         ),
       ),
