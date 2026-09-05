@@ -754,6 +754,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  validatorless:
+    dependency: "direct main"
+    description:
+      name: validatorless
+      sha256: "3c775b19f1702b45f81b9a8fd38c41886a8e36f9b355b85c7a6345b17ce352df"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.2"
   vector_graphics:
     dependency: transitive
     description:
