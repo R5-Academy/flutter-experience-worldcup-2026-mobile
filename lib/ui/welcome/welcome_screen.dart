@@ -1,5 +1,7 @@
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:wc_2026_mobile/routing/routes.dart';
 import 'package:wc_2026_mobile/ui/core/share/app_assets.dart';
 import 'package:wc_2026_mobile/ui/core/share/licensed_badge.dart';
 import 'package:wc_2026_mobile/ui/core/share/logo_card.dart';
@@ -42,7 +44,7 @@ class WelcomeScreen extends StatelessWidget {
                   SizedBox(height: 72, child: StatsBar()),
                   const SizedBox(height: 20),
                   FilledButton(
-                    onPressed: () {},
+                    onPressed: () => context.go(Routes.login),
                     child: Text('COMEÇAR A COLECIONAR  →'),
                   ),
                   const SizedBox(height: 8),

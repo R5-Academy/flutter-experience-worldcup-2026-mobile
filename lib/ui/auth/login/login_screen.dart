@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:wc_2026_mobile/core/result.dart';
 import 'package:wc_2026_mobile/ui/auth/login/login_viewmodel.dart';
@@ -48,7 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
           .showSnackBar(SnackBar(content: Text('Erro ao realizar login')));
     }
 
-    debugPrint(command.result.toString());
+    if (command.result is Ok) {
+      context.go('/home', extra: widget.viewModel.name);
+    }
   }
 
   @override
