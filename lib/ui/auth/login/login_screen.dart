@@ -6,6 +6,7 @@ import 'package:wc_2026_mobile/ui/auth/login/widgets/emblem.dart';
 import 'package:wc_2026_mobile/ui/auth/login/widgets/header.dart';
 import 'package:wc_2026_mobile/ui/auth/login/widgets/login_form.dart';
 import 'package:wc_2026_mobile/ui/core/share/app_loading.dart';
+import 'package:wc_2026_mobile/ui/core/share/error_messages.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 
 class const LoginScreen({super.key, required final LoginViewModel viewModel})
@@ -46,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       command.clearResult();
       debugPrint(error.toString());
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Erro ao realizar login')));
+          .showSnackBar(SnackBar(content: Text(ErrorMessages.of(error))));
     }
 
     if (command.result is Ok) {
