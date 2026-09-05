@@ -1,10 +1,12 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:wc_2026_mobile/ui/auth/login/login_viewmodel.dart';
 import 'package:wc_2026_mobile/ui/auth/login/widgets/emblem.dart';
 import 'package:wc_2026_mobile/ui/auth/login/widgets/header.dart';
 import 'package:wc_2026_mobile/ui/auth/login/widgets/login_form.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 
-class const LoginScreen({super.key}) extends StatefulWidget {
+class const LoginScreen({super.key, required final LoginViewModel viewModel})
+    extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }

@@ -1,9 +1,10 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:wc_2026_mobile/config/application_bindings.dart';
 import 'package:wc_2026_mobile/routing/router.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const ApplicationBindings(child: MainApp()));
 }
 
 class const MainApp({super.key}) extends StatelessWidget {
