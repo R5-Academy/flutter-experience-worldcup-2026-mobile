@@ -28,6 +28,9 @@ final class const NotFoundException({super.cause, super.stackTrace})
 final class const ServerException({super.cause, super.stackTrace})
     extends AppException;
 
+final class const EmailAlreadyInUseException({super.cause, super.stackTrace})
+    extends AppException;
+
 final class const ValidationException(
   final String message, {
   super.cause,

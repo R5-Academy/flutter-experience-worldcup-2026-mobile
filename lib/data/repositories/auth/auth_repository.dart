@@ -6,4 +6,12 @@ abstract interface class AuthRepository {
     required String email,
     required String password,
   });
+
+  Future<Result<void>> register({
+    required String name,
+    required String email,
+    required String password,
+    required List<String> favoriteTeams,
+    required bool acceptedTerms,
+  });
 }

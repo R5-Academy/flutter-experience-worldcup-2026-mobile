@@ -7,6 +7,14 @@ import 'package:wc_2026_mobile/data/repositories/auth/auth_repository.dart';
 import 'package:wc_2026_mobile/data/repositories/team/team_repository.dart';
 import 'package:wc_2026_mobile/domain/models/team/team.dart';
 
+typedef NewUser = ({
+  String name,
+  String email,
+  String password,
+  List<String> favoriteTeams,
+  bool acceptedTerms,
+});
+
 class RegisterViewModel({
   required final AuthRepository _authRepository,
   required final TeamRepository _teamRepository,
@@ -14,6 +22,7 @@ class RegisterViewModel({
   final _log = AppLogger('RegisterViewModel');
 
   late final loadTeams = Command0(_loadTeams);
+  late final registerUser = Command1<void, NewUser>(_register);
 
   List<Team> _teams = [];
 
@@ -52,5 +61,24 @@ class RegisterViewModel({
         );
         return Result.error(error);
     }
+  }
+
+  Future<Result<void>> _register(NewUser user) async {
+    final result = await _authRepository.register(
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      favoriteTeams: user.favoriteTeams,
+      acceptedTerms: user.acceptedTerms,
+    );
+
+    if (result case Error(:final error)) {
+      _log.error(
+        'Falha ao criar a conta',
+        error: error,
+        stackTrace: error.stackTrace,
+      );
+    }
+    return result;
   }
 }
