@@ -11,9 +11,10 @@ final class ErrorMessages._() {
     NotFoundException() => 'Não encontramos o que você procurou.',
     ServerException() =>
       'Estamos com um problema no servidor. Tente mais tarde.',
-    UnknownException() => 'Algo deu errado. Tente novamente.',
 
     EmailAlreadyInUseException() =>
       'Este e-mail já tem conta. Entre com ele ou use outro',
+    StorageException() ||
+    UnknownException() => 'Algo deu errado. Tente novamente.',
   };
 }

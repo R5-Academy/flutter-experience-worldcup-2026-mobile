@@ -5,10 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:wc_2026_mobile/config/environment.dart';
 import 'package:wc_2026_mobile/data/repositories/auth/auth_repository.dart';
 import 'package:wc_2026_mobile/data/repositories/auth/auth_repository_remote.dart';
+import 'package:wc_2026_mobile/data/repositories/auth_session/auth_session_repository.dart';
+import 'package:wc_2026_mobile/data/repositories/auth_session/auth_session_repository_local.dart';
 import 'package:wc_2026_mobile/data/repositories/team/team_repository.dart';
 import 'package:wc_2026_mobile/data/repositories/team/team_repository_remote.dart';
 import 'package:wc_2026_mobile/data/services/api/auth_api.dart';
 import 'package:wc_2026_mobile/data/services/api/team_api.dart';
+import 'package:wc_2026_mobile/data/services/local/secure_storage_service.dart';
 import 'package:wc_2026_mobile/routing/router.dart';
 
 class const ApplicationBindings({super.key, required final Widget child})
@@ -17,6 +20,7 @@ class const ApplicationBindings({super.key, required final Widget child})
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider(create: (context) => SecureStorageService()),
         Provider<GoRouter>(create: (context) => router()),
         Provider(
           create: (context) => Dio(BaseOptions(baseUrl: Environment.baseUrl)),
@@ -24,6 +28,10 @@ class const ApplicationBindings({super.key, required final Widget child})
         Provider(create: (context) => AuthApi(context.read())),
         Provider<AuthRepository>(
           create: (context) => AuthRepositoryRemote(authApi: context.read()),
+        ),
+        Provider<AuthSessionRepository>(
+          create: (context) =>
+              AuthSessionRepositoryLocal(storage: context.read()),
         ),
 
         Provider(create: (context) => TeamApi(context.read())),
