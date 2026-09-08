@@ -1,15 +1,17 @@
 import 'package:flutter/widgets.dart';
+import 'package:wc_2026_mobile/core/auth/auth_session_notifier.dart';
 import 'package:wc_2026_mobile/core/command.dart';
 import 'package:wc_2026_mobile/core/logging/app_logger.dart';
 import 'package:wc_2026_mobile/core/result.dart';
 import 'package:wc_2026_mobile/domain/models/auth_session.dart';
 import 'package:wc_2026_mobile/domain/use_cases/auth/auth_login_use_case.dart';
 
-class LoginViewModel({required final AuthLoginUseCase _loginUseCase})
-    extends ChangeNotifier {
+class LoginViewModel({
+  required final AuthLoginUseCase _loginUseCase,
+  required final AuthSessionNotifier _sessionNotifier,
+}) extends ChangeNotifier {
   final _log = AppLogger('LoginViewModel');
   late final login = Command1<void, (String, String)>(_login);
-  String name = '';
 
   Future<Result<void>> _login((String, String) credentials) async {
     final (email, password) = credentials;
@@ -18,7 +20,7 @@ class LoginViewModel({required final AuthLoginUseCase _loginUseCase})
 
     switch (result) {
       case Ok<AuthSessionUser>(:final value):
-        name = value.name;
+        _sessionNotifier.signedIn(value);
         return Result.done;
       case Error<AuthSessionUser>(:final error):
         _log.error(

@@ -18,7 +18,10 @@ class const LoginBindings({
           ),
         ),
         ChangeNotifierProvider(
-          create: (context) => LoginViewModel(loginUseCase: context.read()),
+          create: (context) => LoginViewModel(
+            loginUseCase: context.read(),
+            sessionNotifier: context.read(),
+          ),
         ),
       ],
       builder: (context, child) => screenBuilder(context),

@@ -50,10 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(ErrorMessages.of(error))));
     }
-
-    if (command.result is Ok) {
-      context.go('/home', extra: widget.viewModel.name);
-    }
   }
 
   @override
