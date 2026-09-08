@@ -24,7 +24,7 @@ class const ApplicationBindings({super.key, required final Widget child})
     return MultiProvider(
       providers: [
         Provider(create: (context) => SecureStorageService()),
-        Provider<GoRouter>(create: (context) => router()),
+
         Provider(
           create: (context) => Dio(BaseOptions(baseUrl: Environment.baseUrl)),
         ),
@@ -58,6 +58,7 @@ class const ApplicationBindings({super.key, required final Widget child})
             authRestoreSessionUseCase: context.read(),
           ),
         ),
+        Provider<GoRouter>(create: (context) => router(context.read())),
       ],
       child: child,
     );

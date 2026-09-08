@@ -57,7 +57,7 @@ class AuthSessionNotifier({
     final changed = _user != null || !_restored;
 
     _user = null;
-    _restored = false;
+    _restored = true;
 
     if (!changed) return;
 
