@@ -2,12 +2,16 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:wc_2026_mobile/core/auth/auth_session_notifier.dart';
 import 'package:wc_2026_mobile/routing/routes.dart';
+import 'package:wc_2026_mobile/ui/album/album_screen.dart';
 import 'package:wc_2026_mobile/ui/auth/login/login_bindings.dart';
 import 'package:wc_2026_mobile/ui/auth/login/login_screen.dart';
 import 'package:wc_2026_mobile/ui/auth/register/register_bindings.dart';
 import 'package:wc_2026_mobile/ui/auth/register/register_screen.dart';
 import 'package:wc_2026_mobile/ui/home/home_screen.dart';
+import 'package:wc_2026_mobile/ui/main/main_screen.dart';
+import 'package:wc_2026_mobile/ui/more/more_screen.dart';
 import 'package:wc_2026_mobile/ui/splash/splash_screen.dart';
+import 'package:wc_2026_mobile/ui/trades/trades_screen.dart';
 import 'package:wc_2026_mobile/ui/welcome/welcome_screen.dart';
 
 GoRouter router(AuthSessionNotifier session) => GoRouter(
@@ -46,10 +50,45 @@ GoRouter router(AuthSessionNotifier session) => GoRouter(
         screenBuilder: (context) => RegisterScreen(viewModel: context.read()),
       ),
     ),
-    GoRoute(
-      path: Routes.home,
-      builder: (context, state) =>
-          HomeScreen(name: state.extra as String? ?? ''),
+
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) =>
+          MainScreen(navigationShell: navigationShell),
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.home,
+              builder: (context, state) =>
+                  HomeScreen(name: state.extra as String? ?? ''),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.album,
+              builder: (context, state) => AlbumScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.trades,
+              builder: (context, state) => TradesScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.more,
+              builder: (context, state) => MoreScreen(),
+            ),
+          ],
+        ),
+      ],
     ),
   ],
 );

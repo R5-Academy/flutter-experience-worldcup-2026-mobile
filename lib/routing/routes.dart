@@ -4,6 +4,9 @@ final class Routes._() {
   static const login = '/auth/login';
   static const authRegister = '/auth/register';
   static const home = '/home';
+  static const album = '/album';
+  static const trades = '/trades';
+  static const more = '/more';
 
   static const public = {splash, welcome, login, authRegister};
 }
