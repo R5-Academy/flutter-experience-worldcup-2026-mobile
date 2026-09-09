@@ -8,7 +8,7 @@ class const HomeBindings({
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [],
+      providers: [Provider(create: (context) => Container())],
       builder: (context, child) => screenBuilder(context),
     );
   }

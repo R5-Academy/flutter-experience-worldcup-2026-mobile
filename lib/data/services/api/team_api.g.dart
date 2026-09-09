@@ -22,7 +22,7 @@ class _TeamApi implements TeamApi {
 
   @override
   Future<List<TeamApiModel>> getTeams() async {
-    final _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{'publicRoute': true};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;

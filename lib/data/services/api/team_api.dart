@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:wc_2026_mobile/data/services/api/interceptors/auth_interceptor.dart';
 import 'package:wc_2026_mobile/data/services/api/model/team/team_api_model.dart';
 
 part 'team_api.g.dart';
@@ -9,6 +10,6 @@ abstract class TeamApi {
   factory TeamApi(Dio dio) = _TeamApi;
 
   @GET('/v1/teams')
-  @Extra({})
+  @Extra(AuthInterceptor.publicRoute)
   Future<List<TeamApiModel>> getTeams();
 }

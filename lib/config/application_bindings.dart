@@ -14,6 +14,7 @@ import 'package:wc_2026_mobile/data/repositories/team/team_repository.dart';
 import 'package:wc_2026_mobile/data/repositories/team/team_repository_remote.dart';
 import 'package:wc_2026_mobile/data/services/api/album_api.dart';
 import 'package:wc_2026_mobile/data/services/api/auth_api.dart';
+import 'package:wc_2026_mobile/data/services/api/interceptors/auth_interceptor.dart';
 import 'package:wc_2026_mobile/data/services/api/team_api.dart';
 import 'package:wc_2026_mobile/data/services/local/secure_storage_service.dart';
 import 'package:wc_2026_mobile/domain/use_cases/auth/auth_logout_use_case.dart';
@@ -29,7 +30,14 @@ class const ApplicationBindings({super.key, required final Widget child})
         Provider(create: (context) => SecureStorageService()),
 
         Provider(
-          create: (context) => Dio(BaseOptions(baseUrl: Environment.baseUrl)),
+          create: (context) => AuthInterceptor(storage: context.read()),
+          dispose: (context, interceptor) => interceptor.dispose(),
+        ),
+
+        Provider(
+          create: (context) =>
+              Dio(BaseOptions(baseUrl: Environment.baseUrl))
+                ..interceptors.add(context.read<AuthInterceptor>()),
         ),
 
         Provider(create: (context) => AuthApi(context.read())),
