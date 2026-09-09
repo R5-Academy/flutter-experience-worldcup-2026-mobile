@@ -4,12 +4,15 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:wc_2026_mobile/config/environment.dart';
 import 'package:wc_2026_mobile/core/auth/auth_session_notifier.dart';
+import 'package:wc_2026_mobile/data/repositories/album/album_repository.dart';
+import 'package:wc_2026_mobile/data/repositories/album/album_repository_remote.dart';
 import 'package:wc_2026_mobile/data/repositories/auth/auth_repository.dart';
 import 'package:wc_2026_mobile/data/repositories/auth/auth_repository_remote.dart';
 import 'package:wc_2026_mobile/data/repositories/auth_session/auth_session_repository.dart';
 import 'package:wc_2026_mobile/data/repositories/auth_session/auth_session_repository_local.dart';
 import 'package:wc_2026_mobile/data/repositories/team/team_repository.dart';
 import 'package:wc_2026_mobile/data/repositories/team/team_repository_remote.dart';
+import 'package:wc_2026_mobile/data/services/api/album_api.dart';
 import 'package:wc_2026_mobile/data/services/api/auth_api.dart';
 import 'package:wc_2026_mobile/data/services/api/team_api.dart';
 import 'package:wc_2026_mobile/data/services/local/secure_storage_service.dart';
@@ -28,6 +31,7 @@ class const ApplicationBindings({super.key, required final Widget child})
         Provider(
           create: (context) => Dio(BaseOptions(baseUrl: Environment.baseUrl)),
         ),
+
         Provider(create: (context) => AuthApi(context.read())),
         Provider<AuthRepository>(
           create: (context) => AuthRepositoryRemote(authApi: context.read()),
@@ -40,6 +44,11 @@ class const ApplicationBindings({super.key, required final Widget child})
         Provider(create: (context) => TeamApi(context.read())),
         Provider<TeamRepository>(
           create: (context) => TeamRepositoryRemote(teamApi: context.read()),
+        ),
+
+        Provider(create: (context) => AlbumApi(context.read())),
+        Provider<AlbumRepository>(
+          create: (context) => AlbumRepositoryRemote(albumApi: context.read()),
         ),
 
         Provider(
