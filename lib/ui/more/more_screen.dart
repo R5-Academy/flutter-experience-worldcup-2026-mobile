@@ -1,13 +1,13 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:wc_2026_mobile/core/auth/auth_session_notifier.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 import 'package:wc_2026_mobile/ui/more/widgets/header.dart';
 import 'package:wc_2026_mobile/ui/more/widgets/menu_row.dart';
 import 'package:wc_2026_mobile/ui/more/widgets/menu_section.dart';
 import 'package:wc_2026_mobile/ui/more/widgets/profile_card.dart';
 
-class MoreScreen extends StatelessWidget {
-  const new({super.key});
-
+class const MoreScreen({super.key, required final AuthSessionNotifier _session})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,9 +16,9 @@ class MoreScreen extends StatelessWidget {
         padding: .fromLTRB(AppDimens.gridMargin, 16, AppDimens.gridMargin, 24),
         children: [
           ProfileCard(
-            initials: 'RR',
-            name: 'Rodrigo Rahman ',
-            email: 'rodrigorahman@academiadoflutter.com.br',
+            initials: _session.initials,
+            name: _session.user?.name ?? '',
+            email: _session.user?.email ?? '',
           ),
           const SizedBox(height: 24),
           const MenuSection(
@@ -75,7 +75,7 @@ class MoreScreen extends StatelessWidget {
             width: double.infinity,
             child: FilledButton(
               style: AppTheme.dangerOutlineButton,
-              onPressed: () {},
+              onPressed: _session.logout,
               child: Text('SAIR DA CONTA'),
             ),
           ),

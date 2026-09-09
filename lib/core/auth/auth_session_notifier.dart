@@ -41,6 +41,15 @@ class AuthSessionNotifier({
     notifyListeners();
   }
 
+  String get initials {
+    final name = _user?.name.trim() ?? '';
+    if (name.isEmpty) return '';
+
+    final words = name.split(RegExp(r'\s+'));
+    final first = words.first[0];
+    return (words.length == 1 ? first : first + words.last[0]).toUpperCase();
+  }
+
   void signedIn(AuthSessionUser user) {
     _user = user;
     _restored = true;

@@ -84,7 +84,7 @@ GoRouter router(AuthSessionNotifier session) => GoRouter(
           routes: [
             GoRoute(
               path: Routes.more,
-              builder: (context, state) => MoreScreen(),
+              builder: (context, state) => MoreScreen(session: context.read()),
             ),
           ],
         ),
