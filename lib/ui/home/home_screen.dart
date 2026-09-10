@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:provider/provider.dart';
 import 'package:wc_2026_mobile/core/auth/auth_session_notifier.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 import 'package:wc_2026_mobile/ui/home/home_viewmodel.dart';
@@ -9,11 +8,13 @@ import 'package:wc_2026_mobile/ui/home/widgets/header.dart';
 import 'package:wc_2026_mobile/ui/home/widgets/recent_stickers.dart';
 import 'package:wc_2026_mobile/ui/home/widgets/repeated_strip.dart';
 
-class const HomeScreen({super.key, required final String name})
-    extends StatelessWidget {
+class const HomeScreen({
+  super.key,
+  required final HomeViewModel _viewModel,
+  required final AuthSessionNotifier _session,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final session = context.read<AuthSessionNotifier>();
     return Scaffold(
       appBar: Header(),
       body: RefreshIndicator(

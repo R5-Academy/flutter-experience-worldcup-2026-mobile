@@ -61,8 +61,10 @@ GoRouter router(AuthSessionNotifier session) => GoRouter(
             GoRoute(
               path: Routes.home,
               builder: (context, state) => HomeBindings(
-                screenBuilder: (context) =>
-                    HomeScreen(name: state.extra as String? ?? ''),
+                screenBuilder: (context) => HomeScreen(
+                  viewModel: context.read(),
+                  session: context.read(),
+                ),
               ),
             ),
           ],
