@@ -17,9 +17,12 @@ class const HomeScreen({
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header(),
+      appBar: Header(
+        initials: _session.initials,
+        name: _session.user?.name ?? '',
+      ),
       body: RefreshIndicator(
-        onRefresh: () async {},
+        onRefresh: _viewModel.refresh,
         child: ListView(
           padding: .only(top: 8, bottom: 24),
           physics: AlwaysScrollableScrollPhysics(),
