@@ -73,6 +73,7 @@ class const ApplicationBindings({super.key, required final Widget child})
           create: (context) => AuthSessionNotifier(
             authLogoutUseCase: context.read(),
             authRestoreSessionUseCase: context.read(),
+            sessionEnded: context.read<AuthInterceptor>().onUnauthorized,
           ),
         ),
         Provider<GoRouter>(create: (context) => router(context.read())),
