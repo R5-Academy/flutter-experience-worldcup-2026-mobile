@@ -1,3 +1,5 @@
+import 'package:material_ui/material_ui.dart';
+
 typedef AlbumStickerView = ({
   String code,
   int number,
@@ -6,3 +8,5 @@ typedef AlbumStickerView = ({
   bool collected,
   int count,
 });
+
+class AlbumViewModel extends ChangeNotifier {}

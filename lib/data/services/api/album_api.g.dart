@@ -21,6 +21,34 @@ class _AlbumApi implements AlbumApi {
   final ParseErrorLogger? errorLogger;
 
   @override
+  Future<AlbumApiModel> getAlbum({String? status, String? team}) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'status': status, r'team': team};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<AlbumApiModel>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/vi/album',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late AlbumApiModel _value;
+    try {
+      _value = AlbumApiModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<AlbumSummaryApiModel> getSummary() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

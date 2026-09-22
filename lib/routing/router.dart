@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:wc_2026_mobile/core/auth/auth_session_notifier.dart';
 import 'package:wc_2026_mobile/routing/routes.dart';
+import 'package:wc_2026_mobile/ui/album/album_bindings.dart';
 import 'package:wc_2026_mobile/ui/album/album_screen.dart';
 import 'package:wc_2026_mobile/ui/auth/login/login_bindings.dart';
 import 'package:wc_2026_mobile/ui/auth/login/login_screen.dart';
@@ -73,7 +74,8 @@ GoRouter router(AuthSessionNotifier session) => GoRouter(
           routes: [
             GoRoute(
               path: Routes.album,
-              builder: (context, state) => AlbumScreen(),
+              builder: (context, state) =>
+                  AlbumBindings(screenBuilder: (context) => AlbumScreen()),
             ),
           ],
         ),
