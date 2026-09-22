@@ -49,6 +49,29 @@ class AlbumViewModel({
     loadSummary.execute();
   }
 
+  void selectedStatus(StickerStatus? status) {
+    if (status == _status) return;
+    _status = status;
+    _reload();
+  }
+
+  void toggleTeam(String code) {
+    if (_teamCode == code) return;
+    _teamCode = code;
+    _reload();
+  }
+
+  void _reload() {
+    notifyListeners();
+    loadAlbum.execute();
+  }
+
+  Future<void> refresh() => Future.wait([
+    loadAlbum.execute(),
+    loadTeams.execute(),
+    loadSummary.execute(),
+  ]);
+
   Future<Result<void>> _loadAlbum() async {
     final album = await _albumRepository.getAlbum(
       status: _status,

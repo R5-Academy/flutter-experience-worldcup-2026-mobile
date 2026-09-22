@@ -74,8 +74,10 @@ GoRouter router(AuthSessionNotifier session) => GoRouter(
           routes: [
             GoRoute(
               path: Routes.album,
-              builder: (context, state) =>
-                  AlbumBindings(screenBuilder: (context) => AlbumScreen()),
+              builder: (context, state) => AlbumBindings(
+                screenBuilder: (context) =>
+                    AlbumScreen(viewModel: context.read()),
+              ),
             ),
           ],
         ),

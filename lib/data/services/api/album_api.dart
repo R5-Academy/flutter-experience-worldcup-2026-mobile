@@ -10,7 +10,7 @@ part 'album_api.g.dart';
 abstract class AlbumApi {
   factory AlbumApi(Dio dio) = _AlbumApi;
 
-  @GET('/vi/album')
+  @GET('/v1/album')
   Future<AlbumApiModel> getAlbum({
     @Query('status') String? status,
     @Query('team') String? team,
