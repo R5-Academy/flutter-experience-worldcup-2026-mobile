@@ -44,19 +44,21 @@ class const TeamSelection({
             ),
             itemCount: stickers.length,
             itemBuilder: (context, index) {
+              final sticker = stickers[index];
               final AlbumStickerView(
                 :code,
                 :label,
                 :number,
                 :player,
                 :collected,
-              ) = stickers[index];
+              ) = sticker;
               return StickerTile(
                 number: number,
                 label: code,
                 player: player,
                 teamColor: color,
                 collected: collected,
+                onTap: () => onStickerTap(sticker),
               );
             },
           ),

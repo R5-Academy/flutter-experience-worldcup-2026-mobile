@@ -8,5 +8,8 @@ final class Routes._() {
   static const trades = '/trades';
   static const more = '/more';
 
+  static const stickerPath = '/sticker/:code';
+  static String sticker(String code) => '/sticker/$code';
+
   static const public = {splash, welcome, login, authRegister};
 }
