@@ -1,11 +1,15 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:wc_2026_mobile/core/result.dart';
 import 'package:wc_2026_mobile/routing/routes.dart';
 import 'package:wc_2026_mobile/ui/album/album_viewmodel.dart';
 import 'package:wc_2026_mobile/ui/album/widgets/filter_tabs.dart';
 import 'package:wc_2026_mobile/ui/album/widgets/header.dart';
 import 'package:wc_2026_mobile/ui/album/widgets/team_selection.dart';
 import 'package:wc_2026_mobile/ui/album/widgets/team_strip.dart';
+import 'package:wc_2026_mobile/ui/core/share/app_loading.dart';
+import 'package:wc_2026_mobile/ui/core/share/error_indicator.dart';
+import 'package:wc_2026_mobile/ui/core/share/error_messages.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 
 class const AlbumScreen({super.key, required final AlbumViewModel _viewModel})
@@ -59,7 +63,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                 ],
               ),
             ),
-            _Album(),
+            _Album(viewModel: widget._viewModel, search: _search),
           ],
         ),
       ),
@@ -108,126 +112,57 @@ class const _TeamsFilter({required final AlbumViewModel _viewModel})
   }
 }
 
-class const _Album() extends StatelessWidget {
+class const _Album({
+  required final AlbumViewModel viewModel,
+  required final TextEditingController search,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SliverMainAxisGroup(
-      slivers: [
-        TeamSelection(
-          name: 'Brasil',
-          flagPath: '/flags/bra.png',
-          color: Color(0XFFFFDF00),
-          progress: '2/21',
-          stickers: [
-            (
-              code: 'BRA',
-              number: 1,
-              label: 'Brasil',
-              collected: true,
-              player: 'JOGADOR',
-              count: 2,
+    return ListenableBuilder(
+      listenable: Listenable.merge([viewModel, viewModel.loadAlbum, search]),
+      builder: (context, _) {
+        if (viewModel.loadAlbum.running) {
+          return SliverFillRemaining(hasScrollBody: false, child: AppLoading());
+        }
+
+        if (viewModel.loadAlbum.result case Error(:final error)) {
+          return SliverFillRemaining(
+            hasScrollBody: false,
+            child: ErrorIndicator(
+              title: ErrorMessages.of(error),
+              label: 'Tentar Novamente',
+              onPressed: viewModel.loadAlbum.execute,
             ),
-            (
-              code: 'BRA',
-              number: 10,
-              label: 'Brasil',
-              collected: true,
-              player: 'JOGADOR',
-              count: 1,
+          );
+        }
+
+        final sections = viewModel.sectionsMatching(search.text);
+        if (sections.isEmpty) {
+          return SliverFillRemaining(
+            hasScrollBody: false,
+            child: Center(
+              child: Padding(
+                padding: AppDimens.edgeInsetsScreen,
+                child: Text('Nenhuma figurinha neste recorte'),
+              ),
             ),
-            (
-              code: 'BRA',
-              number: 20,
-              label: 'Brasil',
-              collected: false,
-              player: 'JOGADOR',
-              count: 0,
-            ),
-            (
-              code: 'BRA',
-              number: 20,
-              label: 'Brasil',
-              collected: false,
-              player: 'JOGADOR',
-              count: 0,
-            ),
-            (
-              code: 'BRA',
-              number: 20,
-              label: 'Brasil',
-              collected: false,
-              player: 'JOGADOR',
-              count: 0,
-            ),
-            (
-              code: 'BRA',
-              number: 20,
-              label: 'Brasil',
-              collected: false,
-              player: 'JOGADOR',
-              count: 0,
-            ),
+          );
+        }
+
+        return SliverMainAxisGroup(
+          slivers: [
+            for (final section in sections)
+              TeamSelection(
+                name: section.name,
+                flagPath: section.flagPath,
+                color: section.color,
+                progress: section.progress,
+                stickers: section.stickers,
+                onStickerTap: (value) {},
+              ),
           ],
-          onStickerTap: (value) {},
-        ),
-        TeamSelection(
-          name: 'BEL',
-          flagPath: '/flags/bel.png',
-          color: Color(0XFFED2939),
-          progress: '5/21',
-          stickers: [
-            (
-              code: 'BEL',
-              number: 1,
-              label: 'Brasil',
-              collected: true,
-              player: 'JOGADOR',
-              count: 2,
-            ),
-            (
-              code: 'BRA',
-              number: 10,
-              label: 'Brasil',
-              collected: true,
-              player: 'JOGADOR',
-              count: 1,
-            ),
-            (
-              code: 'BRA',
-              number: 20,
-              label: 'Brasil',
-              collected: false,
-              player: 'JOGADOR',
-              count: 0,
-            ),
-            (
-              code: 'BRA',
-              number: 20,
-              label: 'Brasil',
-              collected: false,
-              player: 'JOGADOR',
-              count: 0,
-            ),
-            (
-              code: 'BRA',
-              number: 20,
-              label: 'Brasil',
-              collected: false,
-              player: 'JOGADOR',
-              count: 0,
-            ),
-            (
-              code: 'BRA',
-              number: 20,
-              label: 'Brasil',
-              collected: false,
-              player: 'JOGADOR',
-              count: 0,
-            ),
-          ],
-          onStickerTap: (value) {},
-        ),
-      ],
+        );
+      },
     );
   }
 }

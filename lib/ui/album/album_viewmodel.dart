@@ -6,9 +6,11 @@ import 'package:wc_2026_mobile/core/view_model_initializable.dart';
 import 'package:wc_2026_mobile/data/repositories/album/album_repository.dart';
 import 'package:wc_2026_mobile/data/repositories/team/team_repository.dart';
 import 'package:wc_2026_mobile/domain/models/album/album.dart';
+import 'package:wc_2026_mobile/domain/models/album/album_position.dart';
 import 'package:wc_2026_mobile/domain/models/album/album_summary.dart';
 import 'package:wc_2026_mobile/domain/models/album/sticker_status.dart';
 import 'package:wc_2026_mobile/domain/models/team/team.dart';
+import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 
 typedef AlbumStickerView = ({
   String code,
@@ -17,6 +19,14 @@ typedef AlbumStickerView = ({
   String player,
   bool collected,
   int count,
+});
+
+typedef AlbumSectionView = ({
+  String name,
+  String? flagPath,
+  Color color,
+  String progress,
+  List<AlbumStickerView> stickers,
 });
 
 class AlbumViewModel({
@@ -56,8 +66,7 @@ class AlbumViewModel({
   }
 
   void toggleTeam(String code) {
-    if (_teamCode == code) return;
-    _teamCode = code;
+    _teamCode = code == _teamCode ? null : code;
     _reload();
   }
 
@@ -71,6 +80,76 @@ class AlbumViewModel({
     loadTeams.execute(),
     loadSummary.execute(),
   ]);
+
+  List<AlbumSectionView> sectionsMatching(String term) {
+    final album = _album;
+    if (album == null) return const [];
+
+    final query = term.trim().toLowerCase();
+    final searching = query.isNotEmpty;
+
+    final counted = filtered || searching;
+
+    return [
+      for (final group in album.teams)
+        _sectionOf(
+          name: group.team.name,
+          flagPath: group.team.flagUrl,
+          color: Color(group.team.primaryColor),
+          positions: group.stickers,
+          query: query,
+          counted: counted,
+        ),
+      if (album.loose.isNotEmpty)
+        _sectionOf(
+          name: 'ESPECIAIS',
+          flagPath: null,
+          color: AppColors.ink,
+          positions: album.loose,
+          query: query,
+          counted: counted,
+        ),
+    ].nonNulls.toList();
+  }
+
+  AlbumSectionView? _sectionOf({
+    required String name,
+    required String? flagPath,
+    required Color color,
+    required List<AlbumPosition> positions,
+    required String query,
+    required bool counted,
+  }) {
+    if (positions.isEmpty) return null;
+    return (
+      name: name,
+      flagPath: flagPath,
+      color: color,
+      progress: '${positions.where(isCollected).length} / ${positions.length}',
+      stickers: [
+        for (final position in positions)
+          _stickerOf(position, especial: flagPath == null),
+      ],
+    );
+  }
+
+  AlbumStickerView _stickerOf(
+    AlbumPosition position, {
+    required bool especial,
+  }) {
+    final collected = isCollected(position);
+    return (
+      code: position.code,
+      number: position.number,
+      label: position.code.split('-').first,
+      collected: collected,
+      count: collected ? position.repeated + 1 : 0,
+      player: '${especial ? 'ESPECIAL' : 'JOGADOR'} ${position.number}',
+    );
+  }
+
+  bool isCollected(AlbumPosition position) =>
+      position.status != StickerStatus.missing;
 
   Future<Result<void>> _loadAlbum() async {
     final album = await _albumRepository.getAlbum(
