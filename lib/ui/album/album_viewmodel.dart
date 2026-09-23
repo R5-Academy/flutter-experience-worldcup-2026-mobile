@@ -120,14 +120,25 @@ class AlbumViewModel({
     required String query,
     required bool counted,
   }) {
-    if (positions.isEmpty) return null;
+    final matched = query.isEmpty || name.toLowerCase().contains(query)
+        ? positions
+        : [
+            for (final position in positions)
+              if (position.code.toLowerCase().contains(query)) position,
+          ];
+
+    if (matched.isEmpty) return null;
     return (
       name: name,
       flagPath: flagPath,
       color: color,
-      progress: '${positions.where(isCollected).length} / ${positions.length}',
+      progress: counted
+          ? matched.length == 1
+                ? '1 Item'
+                : '${matched.length} itens'
+          : '${matched.where(isCollected).length} / ${matched.length}',
       stickers: [
-        for (final position in positions)
+        for (final position in matched)
           _stickerOf(position, especial: flagPath == null),
       ],
     );
