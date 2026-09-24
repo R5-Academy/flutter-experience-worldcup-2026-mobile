@@ -10,4 +10,16 @@ abstract interface class AlbumRepository {
   Future<Result<AlbumSummary>> getSummary();
 
   Future<Result<List<RecentSticker>>> getRecentStickers();
+
+  Future<Result<void>> registerSticker({
+    required String code,
+    required int quantity,
+  });
+
+  Future<Result<void>> updateStickerQuantity({
+    required String code,
+    required int quantity,
+  });
+
+  Future<Result<void>> removeSticker(String code);
 }
