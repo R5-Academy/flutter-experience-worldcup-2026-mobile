@@ -11,5 +11,7 @@ final class Routes._() {
   static const stickerPath = '/sticker/:code';
   static String sticker(String code) => '/sticker/$code';
 
+  static const stickerRegister = '/sticker/register';
+
   static const public = {splash, welcome, login, authRegister};
 }
