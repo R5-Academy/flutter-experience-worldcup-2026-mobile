@@ -6,7 +6,7 @@ import 'package:wc_2026_mobile/ui/core/theme/app_text_styles.dart';
 class const QuantityCounter({
   super.key,
   required final int count,
-  required ValueChanged<int> onChanged,
+  required final ValueChanged<int> onChanged,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,10 @@ class const QuantityCounter({
             ),
           ),
           const SizedBox(width: 6),
-          _StepButton(icon: Icons.remove, onPressed: () {}),
+          _StepButton(
+            icon: Icons.remove,
+            onPressed: count > 1 ? () => onChanged(count - 1) : () {},
+          ),
           SizedBox(
             width: 52,
             child: FittedBox(
@@ -55,7 +58,11 @@ class const QuantityCounter({
               ),
             ),
           ),
-          _StepButton(icon: Icons.add, onPressed: () {}, primary: true),
+          _StepButton(
+            icon: Icons.add,
+            onPressed: () => onChanged(count + 1),
+            primary: true,
+          ),
         ],
       ),
     );

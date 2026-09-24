@@ -62,7 +62,8 @@ GoRouter router(AuthSessionNotifier session) => GoRouter(
 
         return DetailBindings(
           stickers: sticker,
-          screenBuilder: (context) => DetailScreen(sticker: sticker),
+          screenBuilder: (context) =>
+              DetailScreen(sticker: sticker, viewModel: context.read()),
         );
       },
     ),

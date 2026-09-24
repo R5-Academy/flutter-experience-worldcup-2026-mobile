@@ -12,7 +12,13 @@ class const DetailBindings({
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => DetailViewModel()),
+        ChangeNotifierProvider(
+          create: (context) => DetailViewModel(
+            albumRepository: context.read(),
+            code: stickers.code,
+            count: stickers.count,
+          ),
+        ),
       ],
       builder: (context, _) => screenBuilder(context),
     );
