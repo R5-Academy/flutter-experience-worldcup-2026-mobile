@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:wc_2026_mobile/ui/core/share/app_assets.dart';
 import 'package:wc_2026_mobile/ui/core/share/team_disc.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
+import 'package:wc_2026_mobile/ui/sticker/widgets/sticker_desaturate.dart';
 
 class const HeroCard({
   super.key,
@@ -38,10 +40,57 @@ class const HeroCard({
                   collected: collected,
                 ),
               ),
+              Expanded(
+                child: _StickerView(teamColor: teamColor, collected: collected),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class const _StickerView({
+  required final Color teamColor,
+  required final bool collected,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final base = collected ? teamColor : AppColors.gray;
+
+    return Stack(
+      fit: .expand,
+      children: [
+        ColoredBox(color: base),
+        Image.asset(
+          AppAssets.images.albumPanini2026,
+          fit: .fill,
+          opacity: AlwaysStoppedAnimation(collected ? .8 : .55),
+        ),
+        ColoredBox(color: base.withValues(alpha: collected ? .5 : .7)),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: .topCenter,
+              end: .bottomCenter,
+              colors: [
+                base.withValues(alpha: 0),
+                base.withValues(alpha: .15),
+                AppColors.ink.withValues(alpha: .6),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: const .fromLTRB(60, 10, 60, 80),
+          child: Image.asset(
+            AppAssets.images.logoFifaWc26,
+            fit: .contain,
+            opacity: AlwaysStoppedAnimation(collected ? .95 : .35),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -63,7 +112,10 @@ class const _Header({
         padding: const EdgeInsets.only(left: 18, right: 14),
         child: Row(
           children: [
-            TeamDisc(color: teamColor, flagCode: country),
+            StickerDesaturate(
+              active: !collected,
+              child: TeamDisc(color: teamColor, flagCode: country),
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
