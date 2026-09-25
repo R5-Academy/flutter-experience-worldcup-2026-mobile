@@ -46,8 +46,13 @@ class const HomeScreen({
                           iconColor: AppColors.white,
                           title: 'ADICIONAR',
                           subTitle: 'figurinha',
-                          onTap: () {
-                            context.push(Routes.stickerRegister);
+                          onTap: () async {
+                            final result = await context.push<bool>(
+                              Routes.stickerRegister,
+                            );
+                            if (result ?? false) {
+                              _viewModel.refresh();
+                            }
                           },
                         ),
                       ),

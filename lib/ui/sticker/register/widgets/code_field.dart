@@ -23,7 +23,13 @@ class const CodeField({
             ] else if (i > 0)
               SizedBox(width: 8),
 
-            Expanded(child: _Box(char: null, placeholder: 'A', active: true)),
+            Expanded(
+              child: _Box(
+                char: i < code.length ? code[i] : null,
+                placeholder: 'A',
+                active: true,
+              ),
+            ),
           ],
         ],
       ),

@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:wc_2026_mobile/core/result.dart';
 import 'package:wc_2026_mobile/routing/routes.dart';
+import 'package:wc_2026_mobile/ui/core/share/error_messages.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 import 'package:wc_2026_mobile/ui/sticker/register/sticker_register_viewmodel.dart';
 import 'package:wc_2026_mobile/ui/sticker/register/widgets/code_field.dart';
@@ -11,9 +13,48 @@ import 'package:wc_2026_mobile/ui/sticker/register/widgets/keypad.dart';
 import 'package:wc_2026_mobile/ui/sticker/register/widgets/preview_card.dart';
 import 'package:wc_2026_mobile/ui/sticker/widgets/sticker_action_button.dart';
 
-class const StickerRegisterScreen({super.key}) extends StatelessWidget {
+class const StickerRegisterScreen({
+  super.key,
+  required final StickerRegisterViewModel _viewModel,
+}) extends StatefulWidget {
+  @override
+  State<StickerRegisterScreen> createState() => _StickerRegisterScreenState();
+}
+
+class _StickerRegisterScreenState extends State<StickerRegisterScreen> {
+  @override
+  void initState() {
+    super.initState();
+    widget._viewModel.register.addListener(_onRegisterResult);
+  }
+
+  @override
+  void dispose() {
+    widget._viewModel.register.removeListener(_onRegisterResult);
+    super.dispose();
+  }
+
+  void _onRegisterResult() {
+    final command = widget._viewModel.register;
+
+    switch (command.result) {
+      case null:
+        break;
+      case Ok<StickerMatch>(:final value):
+        command.clearResult();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${value.label} colada no albúm')),
+        );
+      case Error<StickerMatch>(:final error):
+        command.clearResult();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(ErrorMessages.of(error))));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final viewModel = widget._viewModel;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: .light,
       child: Scaffold(
@@ -21,9 +62,16 @@ class const StickerRegisterScreen({super.key}) extends StatelessWidget {
           children: [
             Header(
               onBack: () {
-                context.canPop() ? context.pop(false) : context.go(Routes.home);
+                context.canPop()
+                    ? context.pop(viewModel.changed)
+                    : context.go(Routes.home);
               },
-              child: PreviewCard(match: null),
+              child: ListenableBuilder(
+                listenable: viewModel,
+                builder: (context, _) {
+                  return PreviewCard(match: viewModel.match);
+                },
+              ),
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -44,13 +92,50 @@ class const StickerRegisterScreen({super.key}) extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    CodeField(code: '', length: 6, letters: 3),
+                    ListenableBuilder(
+                      listenable: viewModel,
+                      builder: (context, _) {
+                        return CodeField(
+                          code: viewModel.code,
+                          length: viewModel.codeLength,
+                          letters: viewModel.codeLetter,
+                        );
+                      },
+                    ),
                     const SizedBox(height: 20),
-                    _Hint(match: null),
+                    ListenableBuilder(
+                      listenable: viewModel,
+                      builder: (context, _) {
+                        return _Hint(match: viewModel.match);
+                      },
+                    ),
                     const SizedBox(height: 12),
-                    Keypad(letters: true, onKey: (_) {}, onBackspace: () {}),
+                    ListenableBuilder(
+                      listenable: viewModel,
+                      builder: (context, _) {
+                        return Keypad(
+                          letters: viewModel.code.length < viewModel.codeLetter,
+                          onKey: viewModel.type,
+                          onBackspace: viewModel.backspace,
+                        );
+                      },
+                    ),
                     const SizedBox(height: 16),
-                    _RegisterAction(onPressed: () {}),
+                    ListenableBuilder(
+                      listenable: Listenable.merge([
+                        viewModel,
+                        viewModel.register,
+                      ]),
+                      builder: (context, _) {
+                        final match = viewModel.match;
+
+                        return _RegisterAction(
+                          onPressed: match == null || viewModel.register.running
+                              ? null
+                              : () => viewModel.register.execute(match),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
