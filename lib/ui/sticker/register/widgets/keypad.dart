@@ -7,7 +7,7 @@ class const Keypad({
   required final ValueChanged<String> onKey,
   required final VoidCallback onBackspace,
 }) extends StatelessWidget {
-  final _letterKeys = 'ABCDEFGHIJKLMNOPQRSTUWXYZ';
+  final _letterKeys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   final _digitKeys = '123456789';
 
   @override
